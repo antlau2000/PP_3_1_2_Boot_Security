@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.demo.contoller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,14 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping(value = "/user")
+    public String printUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        Long id = ((User) userDetails).getId();
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user";
     }
 
     @GetMapping(value = "/admin")
@@ -42,9 +53,14 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String submitEditUserForm(@ModelAttribute("user") User user) {
+    public String submitEditUserForm(@ModelAttribute("user") User user, Authentication authentication) {
         userService.save(user);
-        return "redirect:/admin";
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+            return "redirect:/admin";
+        } else {
+            return "redirect:/user";
+        }
     }
 
     @RequestMapping("/delete")
