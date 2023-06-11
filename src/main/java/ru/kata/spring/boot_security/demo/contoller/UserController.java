@@ -15,10 +15,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/admin")
     public String printUsers(Model model) {
         model.addAttribute("users", userService.findAll());
-        return "users";
+        return "admin";
     }
 
     @GetMapping("/new")
