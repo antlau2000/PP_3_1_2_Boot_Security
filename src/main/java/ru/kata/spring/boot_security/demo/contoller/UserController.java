@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/new")
     public String submitNewUserForm(@ModelAttribute("user") User user) {
         userService.save(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/edit")
@@ -44,12 +44,12 @@ public class UserController {
     @PostMapping("/edit")
     public String submitEditUserForm(@ModelAttribute("user") User user) {
         userService.save(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @RequestMapping("/delete")
     public String deleteUser(@RequestParam("id") long id) {
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 }
