@@ -6,9 +6,16 @@
 </head>
 <body>
 <div align="center">
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
     <h1>Update user</h1>
     <form action="#" th:action="@{/edit}" method="post" th:object="${user}">
         <input type="hidden" th:field="*{id}">
+
+        <label>Username:</label>
+        <input type="text" th:field="*{username}" /><br/>
+
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" /><br/>
 
         <label>Name:</label>
         <input type="text" th:field="*{name}" /><br/>

@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -24,6 +25,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void save(User user) {
+        if (user.getId() != null) {
+            if (user.getUsername() != null) {
+                if (repository.findByUsername(user.getUsername()) != null) {
+                    throw new RuntimeException("Username not available!");
+                }
+            }
+//            User oldUser = repository.findById(user.getId()).orElse(null);
+//            if (oldUser != null) {
+//                if (oldUser.getUsername() != null && user.getUsername() != null && !oldUser.getUsername().equals(user.getUsername())) {
+//                    throw new RuntimeException("This is already your username!");
+//                }
+//                if (repository.findByUsername(user.getUsername()) != null) {
+//                    throw new RuntimeException("Username not available!");
+//                }
+//            }
+        } else {
+            Set<Role> userRole = new HashSet<>();
+            userRole.add(roleRepository.findByName("USER"));
+            user.setRoles(userRole);
+        }
         repository.save(user);
     }
 

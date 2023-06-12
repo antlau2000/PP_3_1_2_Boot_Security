@@ -46,15 +46,21 @@ public class UserController {
     }
 
     @GetMapping("/edit")
-    public String editUserFrom(Model model, @RequestParam(value = "id") long id) {
+    public String editUserFrom(Model model, @RequestParam(value = "id") long id, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
+        model.addAttribute("errorMessage", errorMessage);
         return "edit_user";
     }
 
     @PostMapping("/edit")
-    public String submitEditUserForm(@ModelAttribute("user") User user, Authentication authentication) {
-        userService.save(user);
+    public String submitEditUserForm(@ModelAttribute("user") User user, Authentication authentication, Model model) {
+        try {
+            userService.save(user);
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
+            return  "redirect:/edit?id=" + user.getId() + "&errorMessage=" + e.getMessage();
+        }
         if (authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
             return "redirect:/admin";
