@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -17,11 +18,12 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-
     @Autowired
     private UserRepository repository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void save(User user) {
@@ -31,19 +33,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     throw new RuntimeException("Username not available!");
                 }
             }
-//            User oldUser = repository.findById(user.getId()).orElse(null);
-//            if (oldUser != null) {
-//                if (oldUser.getUsername() != null && user.getUsername() != null && !oldUser.getUsername().equals(user.getUsername())) {
-//                    throw new RuntimeException("This is already your username!");
-//                }
-//                if (repository.findByUsername(user.getUsername()) != null) {
-//                    throw new RuntimeException("Username not available!");
-//                }
-//            }
-        } else {
-            Set<Role> userRole = new HashSet<>();
-            userRole.add(roleRepository.findByName("USER"));
-            user.setRoles(userRole);
+        }
+        Set<Role> userRole = new HashSet<>();
+        userRole.add(roleRepository.findByName("USER"));
+        user.setRoles(userRole);
+        if (user.getPassword() != null) {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
         }
         repository.save(user);
     }
