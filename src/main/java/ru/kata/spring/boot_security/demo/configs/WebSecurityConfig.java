@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -23,27 +23,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final UserService userService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder, RoleRepository roleRepository, UserRepository userRepository) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder, RoleService roleService, UserService userService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.userService = userService;
     }
 
     @PostConstruct
     public void init() {
         Role adminRole = new Role("ADMIN");
-        roleRepository.save(adminRole);
+        roleService.save(adminRole);
         Role userRole = new Role("USER");
-        roleRepository.save(userRole);
+        roleService.save(userRole);
         Set<Role> roles = new HashSet<>();
         roles.add(adminRole);
         User admin = new User("admin", "$2a$12$r.MyIcWu4VutAw3z5PcT3OkHnGjO4Xm9AWUllm5d9euY8kQ2TkJ7K", roles);
-        userRepository.save(admin);
+        userService.save(admin);
     }
 
     @Override
