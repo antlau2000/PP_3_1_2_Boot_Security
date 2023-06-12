@@ -6,6 +6,7 @@
 </head>
 <body>
 <div align="center">
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
     <h1>New user</h1>
     <form action="#" th:action="@{/new}" method="post" th:object="${user}">
         <label>Username:</label>
@@ -22,6 +23,12 @@
 
         <label>Age:</label>
         <input type="number" th:field="*{age}" /><br/>
+
+        <label>Roles:</label>
+        <th:block th:each="role : ${listRoles}">
+            <input type="checkbox" th:field="*{roles}" th:name="roles"
+                   th:text="${role.name}" th:value="${role.id}" class="m-2" />
+        </th:block><br/>
 
         <button type="submit">Create new user</button>
     </form>

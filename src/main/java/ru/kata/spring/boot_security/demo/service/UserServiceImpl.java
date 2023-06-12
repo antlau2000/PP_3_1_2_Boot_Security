@@ -13,7 +13,6 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -27,16 +26,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void save(User user) {
-        if (user.getId() != null) {
-            if (user.getUsername() != null) {
-                if (repository.findByUsername(user.getUsername()) != null) {
+        if (user.getUsername() != null) {
+            User someUser = repository.findByUsername(user.getUsername());
+            if (someUser != null) {
+                if (user.getId() != null) {
+                    if (!user.getId().equals(someUser.getId())) {
+                        throw new RuntimeException("Username not available!");
+                    }
+                } else {
                     throw new RuntimeException("Username not available!");
                 }
             }
         }
-        Set<Role> userRole = new HashSet<>();
-        userRole.add(roleRepository.findByName("USER"));
-        user.setRoles(userRole);
+//        if (user.getId() != null) {
+//            if (user.getUsername() != null) {
+//                User someUser = repository.findByUsername(user.getUsername());
+//                if (someUser != null) {
+//                    if (someUser.getUsername() != null
+//                            && someUser.getUsername().equals(user.getUsername())) {
+//                        throw new RuntimeException("Username not available!");
+//                    }
+//                }
+//            }
+//        }
+        if (user.getRoles() == null) {
+            Set<Role> userRole = new HashSet<>();
+            userRole.add(roleRepository.findByName("USER"));
+            user.setRoles(userRole);
+        }
         if (user.getPassword() != null) {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);

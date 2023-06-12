@@ -6,8 +6,9 @@
 </head>
 <body>
 <div align="center">
+  <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
   <h1>Registration</h1>
-  <form action="#" th:action="@{/new}" method="post" th:object="${user}">
+  <form action="#" th:action="@{/registration}" method="post" th:object="${user}">
     <label>Username:</label>
     <input type="text" th:field="*{username}" /><br/>
 
