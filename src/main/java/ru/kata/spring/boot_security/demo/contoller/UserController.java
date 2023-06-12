@@ -45,6 +45,19 @@ public class UserController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/registration")
+    public String registrationUserForm(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String submitRegistrationUserForm(@ModelAttribute("user") User user) {
+        userService.save(user);
+        return "redirect:/login";
+    }
+
     @GetMapping("/edit")
     public String editUserFrom(Model model, @RequestParam(value = "id") long id, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
         User user = userService.findById(id);
