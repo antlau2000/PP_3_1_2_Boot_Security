@@ -78,41 +78,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username.equals("admin")) {
-            return testAdmin(username);
-        } else if (username.equals("user")) {
-            return testUser(username);
-        }
         return repository.findByUsername(username);
-    }
-
-    private User testAdmin(String username) {
-        User admin = repository.findByUsername(username);
-        if (admin == null) {
-            Set<Role> roles = new HashSet<>();
-            Role adminRole = new Role("ADMIN");
-            roleRepository.save(adminRole);
-            roles.add(roleRepository.findByName("ADMIN"));
-            admin = new User(username, "$2a$12$r.MyIcWu4VutAw3z5PcT3OkHnGjO4Xm9AWUllm5d9euY8kQ2TkJ7K", roles);
-            repository.save(admin);
-            return repository.findByUsername(username);
-        } else {
-            return admin;
-        }
-    }
-
-    private User testUser(String username) {
-        User user = repository.findByUsername(username);
-        if (user == null) {
-            Set<Role> roles = new HashSet<>();
-            Role userRole = new Role("USER");
-            roleRepository.save(userRole);
-            roles.add(roleRepository.findByName("USER"));
-            user = new User(username, "$2a$12$PG/C8RUuTOcwXjbJXEIcSuTtuVeMnYwRxoKH9SK1w1jWiOGDhIEEi", roles);
-            repository.save(user);
-            return repository.findByUsername(username);
-        } else {
-            return user;
-        }
     }
 }
