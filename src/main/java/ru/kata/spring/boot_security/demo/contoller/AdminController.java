@@ -3,12 +3,9 @@ package ru.kata.spring.boot_security.demo.contoller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.List;
 
 @Controller
 public class AdminController {
@@ -28,10 +25,8 @@ public class AdminController {
 
     @GetMapping("/new")
     public String newUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = new User();
-        List<Role> listRoles = roleService.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", listRoles);
+        model.addAttribute("user", new User());
+        model.addAttribute("listRoles", roleService.findAll());
         model.addAttribute("errorMessage", errorMessage);
         return "new_user";
     }
@@ -49,10 +44,8 @@ public class AdminController {
 
     @GetMapping("/edit")
     public String editUserFrom(Model model, @RequestParam(value = "id") long id, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = userService.findById(id);
-        List<Role> listRoles = roleService.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", listRoles);
+        model.addAttribute("user", userService.findById(id));
+        model.addAttribute("listRoles", roleService.findAll());
         model.addAttribute("errorMessage", errorMessage);
         return "edit_user";
     }
@@ -76,8 +69,7 @@ public class AdminController {
 
     @GetMapping("/registration")
     public String registrationUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("user", new User());
         model.addAttribute("errorMessage", errorMessage);
         return "registration";
     }

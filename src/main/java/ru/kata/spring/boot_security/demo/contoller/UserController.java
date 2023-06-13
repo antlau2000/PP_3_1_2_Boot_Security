@@ -19,9 +19,7 @@ public class UserController {
 
     @GetMapping(value = "/user")
     public String printUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        Long id = ((User) userDetails).getId();
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findById(((User) userDetails).getId()));
         return "user";
     }
 }
