@@ -1,27 +1,20 @@
 package ru.kata.spring.boot_security.demo.contoller;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping(value = "/user")
@@ -30,83 +23,5 @@ public class UserController {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user";
-    }
-
-    @GetMapping(value = "/admin")
-    public String printUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "admin";
-    }
-
-    @GetMapping("/new")
-    public String newUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = new User();
-        List<Role> listRoles = roleService.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", listRoles);
-        model.addAttribute("errorMessage", errorMessage);
-        return "new_user";
-    }
-
-    @PostMapping("/new")
-    public String submitNewUserForm(@ModelAttribute("user") User user, Model model) {
-        try {
-            userService.save(user);
-        } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
-            return  "redirect:/new?id=" + user.getId() + "&errorMessage=" + e.getMessage();
-        }
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/registration")
-    public String registrationUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("errorMessage", errorMessage);
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String submitRegistrationUserForm(@ModelAttribute("user") User user, Model model) {
-        try {
-            userService.save(user);
-        } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
-            return  "redirect:/registration?id=" + user.getId() + "&errorMessage=" + e.getMessage();
-        }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/edit")
-    public String editUserFrom(Model model, @RequestParam(value = "id") long id, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        User user = userService.findById(id);
-        List<Role> listRoles = roleService.findAll();
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", listRoles);
-        model.addAttribute("errorMessage", errorMessage);
-        return "edit_user";
-    }
-
-    @PostMapping("/edit")
-    public String submitEditUserForm(@ModelAttribute("user") User user, Authentication authentication, Model model) {
-        try {
-            userService.save(user);
-        } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
-            return  "redirect:/edit?id=" + user.getId() + "&errorMessage=" + e.getMessage();
-        }
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
-            return "redirect:/admin";
-        } else {
-            return "redirect:/user";
-        }
-    }
-
-    @RequestMapping("/delete")
-    public String deleteUser(@RequestParam("id") long id) {
-        userService.delete(id);
-        return "redirect:/admin";
     }
 }

@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,12 +16,15 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-    @Autowired
-    private UserRepository repository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository repository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void save(User user) {
@@ -38,17 +40,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 }
             }
         }
-//        if (user.getId() != null) {
-//            if (user.getUsername() != null) {
-//                User someUser = repository.findByUsername(user.getUsername());
-//                if (someUser != null) {
-//                    if (someUser.getUsername() != null
-//                            && someUser.getUsername().equals(user.getUsername())) {
-//                        throw new RuntimeException("Username not available!");
-//                    }
-//                }
-//            }
-//        }
         if (user.getRoles() == null) {
             Set<Role> userRole = new HashSet<>();
             userRole.add(roleRepository.findByName("USER"));
