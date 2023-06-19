@@ -22,6 +22,7 @@ public class AdminController {
     @GetMapping(value = "/admin")
     public String printUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("user", userService.findByUsername(userDetails.getUsername()));
+        model.addAttribute("listRoles", roleService.findAll());
         model.addAttribute("users", userService.findAll());
         return "admin";
     }
@@ -33,7 +34,8 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
+    public String newUserForm(@AuthenticationPrincipal UserDetails userDetails, Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
+        model.addAttribute("admin", userService.findByUsername(userDetails.getUsername()));
         model.addAttribute("user", new User());
         model.addAttribute("listRoles", roleService.findAll());
         model.addAttribute("errorMessage", errorMessage);
