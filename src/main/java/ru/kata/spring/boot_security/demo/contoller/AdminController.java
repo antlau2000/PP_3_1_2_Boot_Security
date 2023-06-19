@@ -53,14 +53,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit")
-    public String editUserFrom(Model model, @RequestParam(value = "id") long id, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        model.addAttribute("user", userService.findById(id));
-        model.addAttribute("listRoles", roleService.findAll());
-        model.addAttribute("errorMessage", errorMessage);
-        return "edit_user";
-    }
-
     @PostMapping("/edit")
     public String submitEditUserForm(@ModelAttribute("user") User user, Model model) {
         try {
@@ -76,23 +68,5 @@ public class AdminController {
     public String deleteUser(@RequestParam("id") long id) {
         userService.delete(id);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/registration")
-    public String registrationUserForm(Model model, @RequestParam(value = "errorMessage", required = false) String errorMessage) {
-        model.addAttribute("user", new User());
-        model.addAttribute("errorMessage", errorMessage);
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String submitRegistrationUserForm(@ModelAttribute("user") User user, Model model) {
-        try {
-            userService.save(user);
-        } catch (RuntimeException e) {
-            model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
-            return  "redirect:/registration?id=" + user.getId() + "&errorMessage=" + e.getMessage();
-        }
-        return "redirect:/login";
     }
 }
