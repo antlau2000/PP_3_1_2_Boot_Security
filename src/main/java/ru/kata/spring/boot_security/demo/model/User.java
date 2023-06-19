@@ -74,4 +74,12 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String getRolesToString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Role role : roles) {
+            stringBuilder.append(role.getName()).append(" ");
+        }
+        return stringBuilder.toString().trim();
+    }
 }

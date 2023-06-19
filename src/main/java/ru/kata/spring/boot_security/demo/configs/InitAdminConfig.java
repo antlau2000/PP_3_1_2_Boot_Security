@@ -27,8 +27,12 @@ public class InitAdminConfig {
         Role userRole = new Role("USER");
         roleService.save(userRole);
         Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
         roles.add(adminRole);
         User admin = new User("admin", "admin", roles);
         userService.save(admin);
+        roles.remove(adminRole);
+        User user = new User("user", "123", roles);
+        userService.save(user);
     }
 }
