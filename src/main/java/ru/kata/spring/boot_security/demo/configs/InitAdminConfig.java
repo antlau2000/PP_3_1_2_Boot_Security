@@ -30,9 +30,9 @@ public class InitAdminConfig {
         roles.add(userRole);
         roles.add(adminRole);
         User admin = new User("admin", "admin", roles);
-        userService.save(admin);
+        userService.create(admin);
         roles.remove(adminRole);
         User user = new User("user", "123", roles);
-        userService.save(user);
+        userService.create(user);
     }
 }

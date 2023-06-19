@@ -94,7 +94,8 @@
                                                                 aria-label="Close"></button>
                                                     </div>
                                                     <form th:action="@{/edit(id=${user.getId()})}"
-                                                          th:object="${user}" th:method="POST">
+                                                          th:object="${user}" th:method="PATCH">
+<!--                                                        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>-->
                                                         <div class="modal-body col-md text-center">
                                                             <br>
                                                             <label for="name"><b>Name</b></label>

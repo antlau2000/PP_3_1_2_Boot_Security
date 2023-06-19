@@ -61,6 +61,7 @@
                                   th:action="@{/new}"
                                   th:object="${user}"
                                   method="POST">
+                                <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
                                 <div class="form-group fw-bold">
                                     <label for="name">Name</label>
                                     <input th:name="name" th:type="text" class="form-control"

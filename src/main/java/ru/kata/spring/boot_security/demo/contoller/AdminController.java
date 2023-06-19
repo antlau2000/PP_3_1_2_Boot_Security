@@ -45,7 +45,7 @@ public class AdminController {
     @PostMapping("/new")
     public String submitNewUserForm(@ModelAttribute("user") User user, Model model) {
         try {
-            userService.save(user);
+            userService.create(user);
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
             return  "redirect:/new?id=" + user.getId() + "&errorMessage=" + e.getMessage();
@@ -53,10 +53,10 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PostMapping("/edit")
+    @PatchMapping("/edit")
     public String submitEditUserForm(@ModelAttribute("user") User user, Model model) {
         try {
-            userService.save(user);
+            userService.update(user);
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", "Ошибка при сохранении пользователя: " + e.getMessage());
             return  "redirect:/edit?id=" + user.getId() + "&errorMessage=" + e.getMessage();
@@ -64,10 +64,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     public String deleteUser(@RequestParam("id") long id) {
         userService.delete(id);
         return "redirect:/admin";
     }
-
 }

@@ -26,19 +26,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void save(User user) {
+    public void create(User user) {
         if (user.getUsername() != null) {
             User someUser = repository.findByUsername(user.getUsername());
             if (someUser != null) {
-                if (user.getId() != null) {
-                    if (!user.getId().equals(someUser.getId())) {
-                        throw new RuntimeException("Username not available!");
-                    }
-                } else {
+                throw new RuntimeException("Username not available!");
+            }
+        }
+        save(user);
+    }
+
+    @Override
+    public void update(User user) {
+        if (user.getUsername() != null) {
+            User someUser = repository.findByUsername(user.getUsername());
+            if (someUser != null) {
+                if (!user.getId().equals(someUser.getId())) {
                     throw new RuntimeException("Username not available!");
                 }
             }
         }
+        save(user);
+    }
+
+    public void save(User user) {
         if (user.getRoles() == null) {
             Set<Role> userRole = new HashSet<>();
             userRole.add(roleRepository.findByName("USER"));
@@ -52,11 +63,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findById(Long id) {
-        return repository.findById(id).get();
-    }
-
-    @Override
     public User findByUsername(String username) {
         return repository.findByUsername(username);
     }
@@ -67,7 +73,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public  Iterable<User> findAll() {
+    public Iterable<User> findAll() {
         return repository.findAll();
     }
 
