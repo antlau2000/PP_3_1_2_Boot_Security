@@ -7,6 +7,8 @@ public interface UserService {
 
     User findById(Long id);
 
+    User findByUsername(String username);
+
     void delete(Long id);
 
     Iterable<User> findAll();

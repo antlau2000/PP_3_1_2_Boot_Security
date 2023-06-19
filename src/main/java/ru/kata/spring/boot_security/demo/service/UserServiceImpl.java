@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
+    @Override
     public void delete(Long id) {
         repository.deleteById(id);
     }

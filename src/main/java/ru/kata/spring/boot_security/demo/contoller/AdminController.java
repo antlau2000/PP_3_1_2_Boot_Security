@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.contoller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,16 @@ public class AdminController {
     }
 
     @GetMapping(value = "/admin")
-    public String printUsers(Model model) {
+    public String printUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("user", userService.findByUsername(userDetails.getUsername()));
         model.addAttribute("users", userService.findAll());
         return "admin";
+    }
+
+    @GetMapping(value = "/userAdmin")
+    public String printUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("user", userService.findByUsername(userDetails.getUsername()));
+        return "userAdmin";
     }
 
     @GetMapping("/new")
