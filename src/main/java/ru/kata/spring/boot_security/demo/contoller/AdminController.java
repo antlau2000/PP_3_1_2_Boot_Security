@@ -69,4 +69,5 @@ public class AdminController {
         userService.delete(id);
         return "redirect:/admin";
     }
+
 }
