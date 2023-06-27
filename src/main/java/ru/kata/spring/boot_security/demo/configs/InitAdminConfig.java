@@ -29,10 +29,10 @@ public class InitAdminConfig {
         Set<Role> roles = new HashSet<>();
         roles.add(userRole);
         roles.add(adminRole);
-        User admin = new User("admin", "admin", roles);
+        User admin = new User("admin", "admin", "name", "surname", 15, roles);
         userService.create(admin);
         roles.remove(adminRole);
-        User user = new User("user", "123", roles);
+        User user = new User("user", "123", "name", "surname", 15, roles);
         userService.create(user);
     }
 }

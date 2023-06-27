@@ -13,14 +13,10 @@
 
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <p class="navbar-brand text-white">
-            <b><span class="align-middle" th:text="${user.username}"></span></b>
-            <span class="align-middle">with roles:</span>
-            <span class="align-middle" th:text="${user.getRolesToString()}"></span>
-        </p>
-        <form th:action="@{/logout}" method="post">
-            <button type="submit" class="btn btn-dark text-secondary">Logout</button>
-        </form>
+        <h5 class="navbar-brand"><strong id="navbar-username" th:font="bold"></strong>
+            with roles:
+            <span id="navbar-roles"></span></h5>
+        <a th:href="@{/logout}" class="btn btn-link text-white-50">Logout</a>
     </div>
 </nav>
 
@@ -47,6 +43,7 @@
                         <div class="card fw-bold">
                             <div class="card-body">
                                 <table class="table fw-light">
+                                    <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Username</th>
@@ -55,12 +52,9 @@
                                         <th>Age</th>
                                         <th>Role</th>
                                     </tr>
-                                    <td th:text="${user.id}">ID</td>
-                                    <td th:text="${user.username}">Username</td>
-                                    <td th:text="${user.name}">Name</td>
-                                    <td th:text="${user.surname}">Surname</td>
-                                    <td th:text="${user.age}">Age</td>
-                                    <td th:text="${user.roles}">Role</td>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -74,5 +68,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+<script type="text/javascript" src="/userJs/userPage.js"></script>
 </body>
 </html>
