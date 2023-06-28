@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -78,8 +79,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Iterable<User> findAll() {
-        return repository.findAll();
+    public List<User> findAll() {
+        return (List<User>) repository.findAll();
     }
 
     @Override

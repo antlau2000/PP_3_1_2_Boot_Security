@@ -1,7 +1,5 @@
 package ru.kata.spring.boot_security.demo.contoller;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.exceptionHandler.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -11,12 +9,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 @RestController
 @RequestMapping("/api")
-public class MyRestController {
+public class AdminRestController {
 
     private final UserService userService;
     private final RoleService roleService;
 
-    public MyRestController(UserService userService, RoleService roleService) {
+    public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -29,11 +27,6 @@ public class MyRestController {
     @GetMapping("/roles")
     public Iterable<Role> showRoles() {
         return roleService.findAll();
-    }
-
-    @GetMapping("/users/auth")
-    public User showAuthUser(@AuthenticationPrincipal UserDetails userDetails) {
-        return userService.findByUsername(userDetails.getUsername());
     }
 
     @GetMapping("/users/{id}")
