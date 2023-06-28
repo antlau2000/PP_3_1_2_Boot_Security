@@ -9,12 +9,12 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @RestController
-@RequestMapping("/api")
-public class AuthRestController {
+@RequestMapping("/api/user")
+public class UserRestController {
 
     private final UserService userService;
 
-    public AuthRestController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 

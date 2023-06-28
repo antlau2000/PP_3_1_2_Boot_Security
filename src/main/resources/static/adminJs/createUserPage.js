@@ -4,7 +4,7 @@ const role_new = document.querySelector('#roles').selectedOptions;
 form_new.addEventListener('submit', addNewUser);
 
 async function loadRolesForNewUser() {
-    const urlDataRoles = 'api/roles/';
+    const urlDataRoles = 'api/admin/roles/';
     let newUserPageRoles = await fetch(urlDataRoles);
     if (newUserPageRoles.ok) {
         const roles = await newUserPageRoles.json();
@@ -21,7 +21,7 @@ async function loadRolesForNewUser() {
 
 async function addNewUser(event) {
     event.preventDefault();
-    const urlNew = 'api/users';
+    const urlNew = 'api/admin/users';
     let listOfRole = [];
     for (let i = 0; i < role_new.length; i++) {
         listOfRole.push({

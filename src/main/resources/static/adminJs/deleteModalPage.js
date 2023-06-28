@@ -9,7 +9,7 @@ const closeDeleteButton = document.getElementById("closeDelete")
 const bsDeleteModal = new bootstrap.Modal(deleteModal);
 
 async function deleteModalData(id) {
-    const urlForDel = 'api/users/' + id;
+    const urlForDel = 'api/admin/users/' + id;
     let usersPageDel = await fetch(urlForDel);
     if (usersPageDel.ok) {
         await usersPageDel.json().then(user => {
@@ -27,7 +27,7 @@ async function deleteModalData(id) {
 }
 
 async function deleteUser() {
-    let urlDel = 'api/users/' + id_del.value;
+    let urlDel = 'api/admin/users/' + id_del.value;
     let method = {
         method: 'DELETE',
         headers: {

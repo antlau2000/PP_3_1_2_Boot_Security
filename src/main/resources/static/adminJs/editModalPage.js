@@ -10,7 +10,7 @@ const bsEditModal = new bootstrap.Modal(editModal);
 
 async function loadDataForEditModal(id) {
     await loadRolesForEditUser();
-    const  urlDataEd = 'api/users/' + id;
+    const  urlDataEd = 'api/admin/users/' + id;
     let usersPageEd = await fetch(urlDataEd);
     if (usersPageEd.ok) {
             await usersPageEd.json().then(user => {
@@ -29,7 +29,7 @@ async function loadDataForEditModal(id) {
 }
 
 async function loadRolesForEditUser() {
-    const urlDataRoles = 'api/roles/';
+    const urlDataRoles = 'api/admin/roles/';
     let newUserPageRoles = await fetch(urlDataRoles);
     if (newUserPageRoles.ok) {
         const roles = await newUserPageRoles.json();
@@ -44,7 +44,7 @@ async function loadRolesForEditUser() {
     }
 }
 async function editUser() {
-    let urlEdit = 'api/users/' + id_ed.value;
+    let urlEdit = 'api/admin/users/' + id_ed.value;
     let listOfRole = [];
     console.dir(form_ed)
     for (let i=0; i<form_ed.roles.options.length; i++) {

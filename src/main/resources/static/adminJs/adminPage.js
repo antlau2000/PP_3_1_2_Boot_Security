@@ -1,5 +1,5 @@
-const users = '/api/users';
-const auth = "/api/auth"
+const users = '/api/admin/users';
+const auth = "/api/user/auth"
 
 const currentUser = fetch(auth).then(response => response.json())
 currentUser.then(user => {
