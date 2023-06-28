@@ -9,6 +9,7 @@ const closeEditButton = document.getElementById("editClose")
 const bsEditModal = new bootstrap.Modal(editModal);
 
 async function loadDataForEditModal(id) {
+    await loadRolesForEditUser();
     const  urlDataEd = 'api/users/' + id;
     let usersPageEd = await fetch(urlDataEd);
     if (usersPageEd.ok) {
@@ -24,6 +25,22 @@ async function loadDataForEditModal(id) {
         bsEditModal.show();
     } else {
         alert(`Error, ${usersPageEd.status}`)
+    }
+}
+
+async function loadRolesForEditUser() {
+    const urlDataRoles = 'api/roles/';
+    let newUserPageRoles = await fetch(urlDataRoles);
+    if (newUserPageRoles.ok) {
+        const roles = await newUserPageRoles.json();
+        const selectElement = document.getElementById('edit-role');
+        selectElement.innerHTML = '';
+        roles.forEach(role => {
+            const optionElement = document.createElement('option');
+            optionElement.value = role.id;
+            optionElement.textContent = role.name;
+            selectElement.appendChild(optionElement);
+        });
     }
 }
 async function editUser() {

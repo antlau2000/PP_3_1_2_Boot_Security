@@ -4,7 +4,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.exceptionHandler.NoSuchUserException;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @RestController
@@ -12,14 +14,21 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class MyRestController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public MyRestController(UserService userService) {
+    public MyRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/users")
     public Iterable<User> showUsers() {
         return userService.findAll();
+    }
+
+    @GetMapping("/roles")
+    public Iterable<Role> showRoles() {
+        return roleService.findAll();
     }
 
     @GetMapping("/users/auth")

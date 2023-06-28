@@ -3,6 +3,22 @@ const role_new = document.querySelector('#roles').selectedOptions;
 
 form_new.addEventListener('submit', addNewUser);
 
+async function loadRolesForNewUser() {
+    const urlDataRoles = 'api/roles/';
+    let newUserPageRoles = await fetch(urlDataRoles);
+    if (newUserPageRoles.ok) {
+        const roles = await newUserPageRoles.json();
+        const selectElement = document.getElementById('roles');
+        selectElement.innerHTML = '';
+        roles.forEach(role => {
+            const optionElement = document.createElement('option');
+            optionElement.value = role.id;
+            optionElement.textContent = role.name;
+            selectElement.appendChild(optionElement);
+        });
+    }
+}
+
 async function addNewUser(event) {
     event.preventDefault();
     const urlNew = 'api/users';

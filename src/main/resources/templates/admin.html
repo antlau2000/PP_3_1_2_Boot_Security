@@ -40,7 +40,7 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="new_user-tab" data-bs-toggle="tab" data-bs-target="#new_user" type="button" role="tab" aria-controls="new_user" aria-selected="false">New user
+                                    <button class="nav-link" id="new_user-tab" data-bs-toggle="tab" data-bs-target="#new_user" type="button" onclick="loadRolesForNewUser();" role="tab" aria-controls="new_user" aria-selected="false">New user
                                     </button>
                                 </li>
 
@@ -101,9 +101,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label d-flex justify-content-center"><b>Role
                                                         </b></label>
-                                                        <select id="roles" multiple class="form-select" size="3" aria-label="size 2 select example">
-                                                            <option value="1">ADMIN</option>
-                                                            <option value="2">USER</option>
+                                                        <select id="roles" multiple class="form-select">
                                                         </select>
                                                     </div>
                                                     <div class="mb-3 d-flex justify-content-center">
@@ -180,13 +178,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit-role" class="col-form-label d-flex justify-content-center"><b>Role</b>:</label>
-                                    <select multiple name="roles" id="edit-role" class="form-select" size="2">
-                                        <option value="1">
-                                            ADMIN
-                                        </option>
-                                        <option value="2">
-                                            USER
-                                        </option>
+                                    <select multiple name="roles" id="edit-role" class="form-select">
                                     </select>
                                 </div>
                             </form>
